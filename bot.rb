@@ -1,41 +1,43 @@
 require 'logger'
 require 'json'
-require 'twitter'
+require 'bundler'
+Bundler.require(:default, ENV["ENV"])
 
-file      = File.open('replies.log', File::WRONLY | File::APPEND)
-logger    = Logger.new(file)
-log.level = Logger::WARN
+env       = ENV["ENV"]
+output    = (env == "development") ? STDOUT : File.open('replies.log', File::WRONLY | File::APPEND | File::CREAT)
+log       = Logger.new(output)
+log.level = (env == "development") ? Logger::DEBUG : Logger::Info
 
-# Setup
+log.info "Setting up Twitter connection..."
 client = Twitter::REST::Client.new do |config|
-  config.consumer_key        = "YOUR_CONSUMER_KEY"
-  config.consumer_secret     = "YOUR_CONSUMER_SECRET"
-  config.access_token        = "YOUR_ACCESS_TOKEN"
-  config.access_token_secret = "YOUR_ACCESS_SECRET"
+  config.consumer_key        = ""
+  config.consumer_secret     = ""
+  config.access_token        = ""
+  config.access_token_secret = ""
 end
 
-advice = {
-  "need haircut": [
-    "A pixie cut would look good on you.",
-    "Just get an up-do.",
-    "Bangs are coming back!",
-    "Just grow it out!",
-    "Don't cut it, just get a blow out"
-  ]
-}
+log.info "Fetching advices file..."
+advices_url = ENV["ADVICES_URL"]
+log.info "URL: #{advices_url}"
 
 advised = []
 loop do
   begin
-    rand_key = advice.keys.sample # Pull a random item from the advice dictionary to search for
+    # We run this inside the loop so we can pick up on new changes to the file.
+    log.info "Parsing advices file..."
+    advices_unparsed  = HTTParty.get(advices_url)
+    advices           = JSON.parse(advices_unparsed).to_h
+
+    log.info "RUNNING BOT!"
+    rand_key = advices.keys.sample # Pull a random item from the advices dictionary to search for
     tweets   = client.search(rand_key).take(100) # Search for the keyword
     tweet    = tweets.sample # Pull a random search response
 
     unless ( advised.include? tweet.id )
-      advice_to_give = advice[a].sample
+      advice_to_give = advices[rand_key].sample
       full_tweet     = "@#{tweet.user.screen_name} #{advice_to_give}"
 
-      api.update full_tweet, in_reply_to_status_id: tweet.id # Tweet reply.
+      client.update full_tweet, in_reply_to_status_id: tweet.id # Tweet reply.
 
       log.info "Original Tweet: #{tweet.user.screen_name} #{tweet.text}"
       log.info "Advice Given: #{full_tweet}"
@@ -55,8 +57,9 @@ loop do
     my_replies = client.mentions_timeline
     my_replies.each do |reply|
       unless ( advised.include? my_reply )
-        client.update "@#{reply.user.screen_name} I hope that you found my advice helpful!"
-        log.info "@#{reply.user.screen_name} I hope that you found my advice helpful!\n"
+        reply_to_give = "@#{reply.user.screen_name} I hope that you found my advice helpful!"
+        client.update reply_to_give
+        log.info reply_to_give
         advised << reply.id
       end
     end
