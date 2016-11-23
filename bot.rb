@@ -2,7 +2,8 @@ require 'logger'
 require 'json'
 require 'twitter'
 
-log = Logger.new(STDOUT)
+file      = File.open('replies.log', File::WRONLY | File::APPEND)
+logger    = Logger.new(file)
 log.level = Logger::WARN
 
 # Setup
