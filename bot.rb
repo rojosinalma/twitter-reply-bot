@@ -37,7 +37,7 @@ loop do
       advice_to_give = advices[rand_key].sample # Based on the random key, get a random advice.
       full_tweet     = "@#{tweet.user.screen_name} #{advice_to_give}"
 
-      client.update full_tweet, in_reply_to_status_id: tweet.id # Tweet reply.
+      client.update full_tweet, in_reply_to_status_id: tweet.id unless env == "development" # Tweet reply.
 
       log.info "Original Tweet: #{tweet.user.screen_name} #{tweet.text}"
       log.info "Advice Given: #{full_tweet}"
@@ -58,7 +58,7 @@ loop do
     my_replies.each do |reply|
       unless ( advised.include? my_reply )
         reply_to_give = "@#{reply.user.screen_name} I hope that you found my advice helpful!"
-        client.update reply_to_give
+        client.update reply_to_give unless env == "development"
         log.info reply_to_give
         advised << reply.id
       end
