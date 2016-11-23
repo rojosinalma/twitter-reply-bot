@@ -17,13 +17,13 @@ Install:
 
 Run: 
 
-`$ ADVICES_FILE=http://example.com/your_file.json bundle exec ruby bot.rb`
+`$ ADVICES_URL=http://example.com/your_file.json bundle exec ruby bot.rb`
 
 You can additionally pass `ENV=development` to have the log output to STDOUT instead of a file, use pry and avoid tweets from being actually tweeted.
 
 ## Usage:
 
-Set the env var `ADVICES_FILE` to wherever your remote .json file is (you can also override it in the code if that's your preference).
+Set the env var `ADVICES_URL` to wherever your remote .json file is (you can also override it in the code if that's your preference).
 
 The .json file with replies should look like this:
 
