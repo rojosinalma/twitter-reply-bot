@@ -34,7 +34,7 @@ loop do
     tweet    = tweets.sample # Pull a random search response
 
     unless ( advised.include? tweet.id )
-      advice_to_give = advices[rand_key].sample
+      advice_to_give = advices[rand_key].sample # Based on the random key, get a random advice.
       full_tweet     = "@#{tweet.user.screen_name} #{advice_to_give}"
 
       client.update full_tweet, in_reply_to_status_id: tweet.id # Tweet reply.
