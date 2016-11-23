@@ -11,7 +11,9 @@ Install:
 
 Run: 
 
-`$ ruby bot.rb`
+`$ ADVICES_FILE=http://example.com/your_file.json bundle exec ruby bot.rb`
+
+_ You can additionally pass ENV=development to have the log output to STDOUT instead of a file (and also use pry).
 
 ## Usage:
 
