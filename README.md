@@ -23,7 +23,9 @@ You can additionally pass ENV=development to have the log output to STDOUT inste
 
 ## Usage:
 
-Change the replies in the `advice` variable (hash) according to your needs.
+Point the `advices_url` to wherever your remote .json file is.
+
+The original version uses a hash instead of a remote file, but I find this a bit more useful, allowing people to change the advices without having to restart the bot.
 
 That's it!
 
