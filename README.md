@@ -3,6 +3,12 @@ twitter-reply-bot
 
 This bot is basically the ruby port of [twitter-advice-bot](https://github.com/jonjanego/Twitter-Advice-Bot/blob/master/advice_bot.py), which is made in Python.
 
+It has some other features that the Python version doesn't have:
+
+1. Being able to fetch the advices from a remote .json file (stored by you somewhere in the interwebz).
+2. Start it in "development" mode, avoiding tweeting real tweets and seeing the output in STDOUT.
+3. A nice README.
+
 ## Setup
 
 Install:
@@ -13,7 +19,7 @@ Run:
 
 `$ ADVICES_FILE=http://example.com/your_file.json bundle exec ruby bot.rb`
 
-_ You can additionally pass ENV=development to have the log output to STDOUT instead of a file, use pry and avoid tweets from being actually tweeted.
+You can additionally pass ENV=development to have the log output to STDOUT instead of a file, use pry and avoid tweets from being actually tweeted.
 
 ## Usage:
 
