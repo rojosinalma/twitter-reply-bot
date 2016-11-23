@@ -19,11 +19,29 @@ Run:
 
 `$ ADVICES_FILE=http://example.com/your_file.json bundle exec ruby bot.rb`
 
-You can additionally pass ENV=development to have the log output to STDOUT instead of a file, use pry and avoid tweets from being actually tweeted.
+You can additionally pass `ENV=development` to have the log output to STDOUT instead of a file, use pry and avoid tweets from being actually tweeted.
 
 ## Usage:
 
-Point the `advices_url` to wherever your remote .json file is.
+Set the env var `ADVICES_FILE` to wherever your remote .json file is (you can also override it in the code if that's your preference).
+
+The .json file with replies should look like this:
+
+```
+{
+ "reply_back": "I hope my advise helped!", // This is the answer the bot gives users that actually replied back to the advise.
+
+ "search key 1": [
+   "advise 1",
+   "advise 2"
+ ],
+
+ "search key 2": [
+   "advise 1",
+   "advise 2"
+ ]
+}
+```
 
 The original version uses a hash instead of a remote file, but I find this a bit more useful, allowing people to change the advices without having to restart the bot.
 
